@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+/**
+ * Class $CLASS$.
+ */
+class $CLASS$ extends Migration
+{
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::connection('$DBCONNECTION$')->create('$TABLE$', function(Blueprint $table) {
+			$table->engine    = '$ENGINE$';
+			$table->charset	  = '$CHARSET$';
+			$table->collation = '$COLLATION$';
+			$FIELDS$
+		});
+		$TABLECOMMENT$
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('$TABLE$');
+	}
+}
