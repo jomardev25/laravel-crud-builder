@@ -9,7 +9,6 @@ use App\Helpers\ModuleHelper;
 use Illuminate\Support\Facades\DB;
 use App\Generators\MigrationGenerator;
 use App\Contracts\Core\ModuleRepository;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class ModuleRepositoryEloquent.

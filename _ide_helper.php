@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.5.48 on 2019-09-27 15:08:41.
+ * Generated for Laravel 5.5.48 on 2019-10-02 15:08:37.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -3267,6 +3267,20 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * Get a lock instance.
+         *
+         * @param string $name
+         * @param int $seconds
+         * @return \Illuminate\Contracts\Cache\Lock 
+         * @static 
+         */ 
+        public static function lock($name, $seconds = 0)
+        {
+                        /** @var \Illuminate\Cache\RedisStore $instance */
+                        return $instance->lock($name, $seconds);
+        }
+        
+        /**
          * Remove all items from the cache.
          *
          * @return bool 
@@ -3274,32 +3288,45 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function flush()
         {
-                        /** @var \Illuminate\Cache\FileStore $instance */
+                        /** @var \Illuminate\Cache\RedisStore $instance */
                         return $instance->flush();
         }
         
         /**
-         * Get the Filesystem instance.
+         * Get the Redis connection instance.
          *
-         * @return \Illuminate\Filesystem\Filesystem 
+         * @return \Predis\ClientInterface 
          * @static 
          */ 
-        public static function getFilesystem()
+        public static function connection()
         {
-                        /** @var \Illuminate\Cache\FileStore $instance */
-                        return $instance->getFilesystem();
+                        /** @var \Illuminate\Cache\RedisStore $instance */
+                        return $instance->connection();
         }
         
         /**
-         * Get the working directory of the cache.
+         * Set the connection name to be used.
          *
-         * @return string 
+         * @param string $connection
+         * @return void 
          * @static 
          */ 
-        public static function getDirectory()
+        public static function setConnection($connection)
         {
-                        /** @var \Illuminate\Cache\FileStore $instance */
-                        return $instance->getDirectory();
+                        /** @var \Illuminate\Cache\RedisStore $instance */
+                        $instance->setConnection($connection);
+        }
+        
+        /**
+         * Get the Redis database instance.
+         *
+         * @return \Illuminate\Contracts\Redis\Factory 
+         * @static 
+         */ 
+        public static function getRedis()
+        {
+                        /** @var \Illuminate\Cache\RedisStore $instance */
+                        return $instance->getRedis();
         }
         
         /**
@@ -3310,8 +3337,21 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getPrefix()
         {
-                        /** @var \Illuminate\Cache\FileStore $instance */
+                        /** @var \Illuminate\Cache\RedisStore $instance */
                         return $instance->getPrefix();
+        }
+        
+        /**
+         * Set the cache key prefix.
+         *
+         * @param string $prefix
+         * @return void 
+         * @static 
+         */ 
+        public static function setPrefix($prefix)
+        {
+                        /** @var \Illuminate\Cache\RedisStore $instance */
+                        $instance->setPrefix($prefix);
         }
          
     }
@@ -7751,6 +7791,55 @@ namespace Illuminate\Support\Facades {
         public static function hasMacro($name)
         {
                         return \Illuminate\Routing\Redirector::hasMacro($name);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     * @see \Illuminate\Redis\RedisManager
+     * @see \Illuminate\Contracts\Redis\Factory
+     */ 
+    class Redis {
+        
+        /**
+         * Get a Redis connection by name.
+         *
+         * @param string|null $name
+         * @return \Illuminate\Redis\Connections\Connection 
+         * @static 
+         */ 
+        public static function connection($name = null)
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        return $instance->connection($name);
+        }
+        
+        /**
+         * Resolve the given connection by name.
+         *
+         * @param string|null $name
+         * @return \Illuminate\Redis\Connections\Connection 
+         * @throws \InvalidArgumentException
+         * @static 
+         */ 
+        public static function resolve($name = null)
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        return $instance->resolve($name);
+        }
+        
+        /**
+         * Return all of the created connections.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function connections()
+        {
+                        /** @var \Illuminate\Redis\RedisManager $instance */
+                        return $instance->connections();
         }
          
     }
@@ -13773,6 +13862,149 @@ namespace Illuminate\Support\Facades {
  
 }
 
+namespace App\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class ModuleFacade {
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function jsonDecode($args)
+        {
+                        return \App\Helpers\ModuleHelper::jsonDecode($args);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function jsonEncode($args)
+        {
+                        return \App\Helpers\ModuleHelper::jsonEncode($args);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function createRouters()
+        {
+                        return \App\Helpers\ModuleHelper::createRouters();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toJavascript($forms, $app, $class)
+        {
+                        return \App\Helpers\ModuleHelper::toJavascript($forms, $app, $class);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toForm($forms, $layout)
+        {
+                        return \App\Helpers\ModuleHelper::toForm($forms, $layout);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function formShow($type, $field, $required, $option = array())
+        {
+                        return \App\Helpers\ModuleHelper::formShow($type, $field, $required, $option);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toView($grids)
+        {
+                        return \App\Helpers\ModuleHelper::toView($grids);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toMasterDetail($info)
+        {
+                        return \App\Helpers\ModuleHelper::toMasterDetail($info);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function blend($str, $data)
+        {
+                        return \App\Helpers\ModuleHelper::blend($str, $data);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function createPreCombo($field, $table, $key, $val, $app, $class, $lookey = null)
+        {
+                        /** @var \App\Helpers\ModuleHelper $instance */
+                        return $instance->createPreCombo($field, $table, $key, $val, $app, $class, $lookey);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function formatRows($value, $attr, $row = null)
+        {
+                        return \App\Helpers\ModuleHelper::formatRows($value, $attr, $row);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function dbLookUp($val, $field, $arr)
+        {
+                        return \App\Helpers\ModuleHelper::dbLookUp($val, $field, $arr);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function limiTo($limit)
+        {
+                        return \App\Helpers\ModuleHelper::limiTo($limit);
+        }
+         
+    }
+ 
+}
+
 namespace Barryvdh\Debugbar { 
 
     /**
@@ -17232,6 +17464,8 @@ namespace  {
 
     class Redirect extends \Illuminate\Support\Facades\Redirect {}
 
+    class Redis extends \Illuminate\Support\Facades\Redis {}
+
     class Request extends \Illuminate\Support\Facades\Request {}
 
     class Response extends \Illuminate\Support\Facades\Response {}
@@ -17249,6 +17483,8 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class ModuleHelper extends \App\Facades\ModuleFacade {}
 
     class Debugbar extends \Barryvdh\Debugbar\Facade {}
 

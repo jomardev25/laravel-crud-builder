@@ -15,13 +15,31 @@ class ModuleHelper
 		return $obj;
     }
 
-    public static function jsonEncode(array $args) 
+	public static function jsonEncode(array $args)
 	{
 		$str = json_encode( $args );
 		$enc = base64_encode($str );
 		$enc = strtr( $enc, 'poligamI123456', '123456poligamI');
 		return $enc;
 	}
+
+	public static function createRouters()
+    {
+        $rows = \App\Models\Core\Module::where('module_type','!=','core')->get();
+        $val  =    "<?php"; 
+		foreach($rows as $row){
+			$class = $row->module_name;
+			$controller = ucwords($row->module_name).'Controller';
+			$val .= "Route::controller('{$class}', '{$controller}');";        
+		}
+        $val .=     "?>";
+        $filename = base_path().'/routes/moduleroutes.php';
+        $fp=fopen($filename,"w+"); 
+        fwrite($fp,$val); 
+        fclose($fp);    
+        return true;    
+        
+    } 
 	
 	public static function toJavascript($forms, $app, $class)
 	{
@@ -427,15 +445,12 @@ class ModuleHelper
 	
 	public static function toView( $grids )
 	{
-		//usort($grids, $this->_sort);
 		$f = '';
-		foreach($grids as $grid)
-		{
-			if(isset($grid['conn']) && is_array($grid['conn']))
-			{
+		foreach($grids as $grid){
+			if(isset($grid['conn']) && is_array($grid['conn'])){
 				$conn = $grid['conn'];
 				//print_r($conn);exit;
-			} else {
+			}else {
 				$conn = array('valid'=>0,'db'=>'','key'=>'','display'=>'');
 			}
 
@@ -445,8 +460,7 @@ class ModuleHelper
 				$val = "{{ SiteHelpers::formatLookUp(\$row->".$grid['field'].",'".$grid['field']."','$c') }}";
 			}			
 			
-			if($grid['detail'] =='1')  
-			{
+			if($grid['detail'] =='1'){
 				$format_as = (isset($grid['format_as']) ? $grid['format_as'] : '' );
 				$format_value = (isset($grid['format_value']) ?  $grid['format_value'] : '');
 

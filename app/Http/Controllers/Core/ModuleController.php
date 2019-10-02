@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Core;
 
+use App;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Contracts\Core\ModuleRepository;
+use App\Contracts\Core\MenuItemRepository;
+use App\Contracts\Core\PlantZoneRepository;
 use App\Http\Requests\Core\ModuleCreateRequest;
 use App\Http\Requests\Core\ModuleUpdateRequest;
-use App\Models\Modules\Maintenance\Plant;
 
 class ModuleController extends Controller
 {
@@ -17,31 +19,54 @@ class ModuleController extends Controller
     */
     protected $repository;
 
+    private $menuRepo;
+
+    private $plantZoneRepo;
+
     /**
      * ModulesController constructor.
      *
      * @param ModuleRepository $repository
      */
-    public function __construct(ModuleRepository $repository)
+    public function __construct(ModuleRepository $repository, MenuItemRepository $menuRepo, PlantZoneRepository $plantZoneRepo)
     {
         $this->repository = $repository;
+        $this->menuRepo = $menuRepo;
+        $this->plantZoneRepo = $plantZoneRepo;
     }
 
     public function index()
     {
+        //$this->menuRepo->all();
+        $menuItems = $this->menuRepo->with('posts')->where('customer_id', 1)->where('account_num', 1)->all();       
+        //$modules = $this->repository->all();
+
+        $modules = $this->repository->onlyTrashed()->where('module_id', 131)->where('name', 'class_code')->get();
         
-        $modules = $this->repository->all();
+        //$customers = \DB::table('customers')->get();
+
+        $this->menuRepo->disableCache()->create(
+            ['customer_id' => '12', 'account_num' => '12']
+        );
+        
+
         //$plants = Plant::limit(7)->get();
         //$configs = $this->repository->jsonDecode($module->config);
         //$tableGrid = $configs['grid'];
         //$tableRows = $plants;
         //return view('modules.maintenance.plants.index', compact('tableGrid', 'tableRows'));
-        $this->repository->build(131);
+        //$this->repository->build(131);
         return view('core.module.index', compact('modules'));
+
+
     }
 
     public function create()
     {
+        $routeGenerator = app()->make('App\Generators\RoutesGenerator');
+        $routeGenerator->prepend("Route::post('/daily-sales/storessss', 'Core\ModuleController@posssst');");
+
+        
         $tables = $this->repository->getTableList(config('database.default'));
         $engines = DB::select('SHOW ENGINES');
         $charsets = DB::select('SHOW CHARACTER SET');

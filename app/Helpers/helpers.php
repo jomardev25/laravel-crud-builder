@@ -17,3 +17,18 @@ function clean_slug($string){
 function get_setting($key){
     return Setting::getSetting($key);
 }
+
+function tree($parents, $children, $parentField = 'parent', $childrenField){
+    $dataArr = [];
+    $i = 0;
+    foreach ($parents as $item){
+      $dataArr[$i] = $item->toArray();
+      $find = $children->where($parentField, $item->{$childrenField});
+      $dataArr[$i]['children'] = [];
+      if ($find->count()) {
+        $dataArr[$i]['children'] = tree($find, $children);
+      }
+      $i++;
+    }
+    return $dataArr;
+}

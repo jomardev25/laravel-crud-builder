@@ -146,30 +146,7 @@ trait ModuleTrait
 			$res = str_ireplace($src,$rep,$str);
 		}
 		
-		return $res;
-		
+		return $res;		
     }
-    
-
-    public function createRouters()
-    {
-        $rows = \App\Models\Core\Module::where('module_type','!=','core')->get();
-        $val  =    "<?php
-        "; 
-            foreach($rows as $row)
-            {
-                $class = $row->module_name;
-                $controller = ucwords($row->module_name).'Controller';
-                $val .= "Route::controller('{$class}', '{$controller}');
-                        ";        
-            }
-        $val .=     "?>";
-        $filename = base_path().'/routes/moduleroutes.php';
-        $fp=fopen($filename,"w+"); 
-        fwrite($fp,$val); 
-        fclose($fp);    
-        return true;    
-        
-    } 
 
 }
