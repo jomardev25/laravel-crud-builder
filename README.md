@@ -1,2 +1,2 @@
-# crud-builder
-Laravel CRUD and Report Builder
+# Simple Laravel Crud Builder
+Laravel CRUD and Report Generator
